@@ -12,6 +12,35 @@
 #define RESET   "\033[0m"
 #define WHITE_BACKGROUND "\033[47m"
 
+// Função de login
+int login() {
+    char usuario[20];
+    char senha[20];
+    int tentativas = 3;
+
+    while (tentativas > 0) {
+        system("cls");  // Limpa a tela (Windows)
+        printf(CYAN "======= LOGIN =======\n" RESET);
+        printf("Usuário: ");
+        scanf("%s", usuario);
+        printf("Senha: ");
+        scanf("%s", senha);
+
+        if (strcmp(usuario, "admin") == 0 && strcmp(senha, "1234") == 0) {
+            printf(GREEN "\nLogin realizado com sucesso!\n" RESET);
+            system("pause");
+            return 1;  // Login ok
+        } else {
+            tentativas--;
+            printf(RED "\nUsuário ou senha incorretos. Tentativas restantes: %d\n" RESET, tentativas);
+            system("pause");
+        }
+    }
+
+    printf(RED "\nNúmero máximo de tentativas excedido. Encerrando o programa.\n" RESET);
+    return 0;  // Falha no login
+}
+
 // Função para registro de dados
 int registro() {
     char arquivo[40];
@@ -105,8 +134,13 @@ int deletar() {
 
 int main() {
     setlocale(LC_ALL, "Portuguese");
-    int opcao;
 
+    // Login antes do menu
+    if (!login()) {
+        return 0;  // Encerrar se o login falhar
+    }
+
+    int opcao;
     while (1) {
         system("cls");
 
@@ -124,7 +158,7 @@ int main() {
 
         system("cls");
 
-        switch(opcao) {
+        switch (opcao) {
             case 1:
                 registro();
                 break;
@@ -142,6 +176,7 @@ int main() {
                 system("pause");
         }
     }
+
     return 0;
 }
 
